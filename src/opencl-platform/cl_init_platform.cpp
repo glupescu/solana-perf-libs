@@ -9,6 +9,10 @@
 #include "cl_common.h"
 
 cl_uint query_device_type = CL_DEVICE_TYPE_ALL;
+
+cl_uint query_platform_id = 0;
+cl_uint query_device_id = 0;
+
 bool cl_is_init = false;
 
 cl_context context;
@@ -231,6 +235,8 @@ bool cl_check_init(void) {
     CL_ERR( clGetPlatformIDs(platform_num, platform_list, NULL));
     cout << "Platforms found: " << platform_num << endl;
 
+    bool dev_selected = false;
+
     /* list all platforms and VENDOR/VERSION properties */
     for(int platf=0; platf<platform_num; platf++)
     {
@@ -289,15 +295,21 @@ bool cl_check_init(void) {
 
             /* select device based on cli arguments */
             string tmpAttrData = attr_data;
-            
-            // always select last device of type GPU
-            platform = platform_list[platf];
-            device = device_list[dev];
+
+            if((dev == query_device_id) && 
+                (platf == query_platform_id)) {
+                platform = platform_list[platf];
+                device = device_list[dev];
+                cout << "<----- SELECTED";
+                dev_selected = true;
+            }
 
             delete[] attr_data;
             cout << endl;
         }
     }
+
+    DIE(dev_selected == false, "no platform or device selected");
 
     // clean
     delete[] platform_list;
