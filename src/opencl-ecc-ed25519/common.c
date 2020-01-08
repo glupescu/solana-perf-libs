@@ -1,23 +1,23 @@
 #ifndef COMMON_CL
 #define COMMON_CL
 
-static ulong load_3(const unsigned char *in) {
-    ulong result;
+static unsigned long load_3(const unsigned char *in) {
+    unsigned long result;
 
-    result = (ulong) in[0];
-    result |= ((ulong) in[1]) << 8;
-    result |= ((ulong) in[2]) << 16;
+    result = (unsigned long) in[0];
+    result |= ((unsigned long) in[1]) << 8;
+    result |= ((unsigned long) in[2]) << 16;
 
     return result;
 }
 
 static uint64_t load_4(const unsigned char *in) {
-    ulong result;
+    unsigned long result;
 
-    result = (ulong) in[0];
-    result |= ((ulong) in[1]) << 8;
-    result |= ((ulong) in[2]) << 16;
-    result |= ((ulong) in[3]) << 24;
+    result = (unsigned long) in[0];
+    result |= ((unsigned long) in[1]) << 8;
+    result |= ((unsigned long) in[2]) << 16;
+    result |= ((unsigned long) in[3]) << 24;
     
     return result;
 }

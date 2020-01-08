@@ -9,6 +9,8 @@
 #include "cl_common.h"
 
 cl_uint query_device_type = CL_DEVICE_TYPE_ALL;
+cl_uint query_device_id = 9999;
+
 bool cl_is_init = false;
 
 cl_context context;
@@ -276,7 +278,6 @@ bool cl_check_init(void) {
         /* get num of available OpenCL devices type ALL on the selected platform */
         if(clGetDeviceIDs(platform_list[platf], 
             query_device_type, 0, NULL, &device_num) != CL_SUCCESS) {
-            device_num = 0;
             continue;
         }
 
@@ -287,6 +288,12 @@ bool cl_check_init(void) {
         CL_ERR( clGetDeviceIDs(platform_list[platf], query_device_type,
             device_num, device_list, NULL));
         cout << "\tDevices found " << device_num  << endl;
+
+		if(device_num < 1) {
+			cout << "\tDevice not found";
+		}
+		
+		bool dev_selected = false;
 
         /* list all devices and TYPE/VERSION properties */
         for(int dev=0; dev<device_num; dev++)
@@ -306,8 +313,22 @@ bool cl_check_init(void) {
             string tmpAttrData = attr_data;
             
             // always select last device of type GPU
-            platform = platform_list[platf];
-            device = device_list[dev];
+			if(dev == query_device_id) {
+				platform = platform_list[platf];
+				device = device_list[dev];
+				cout << "<----- SELECTED";
+				dev_selected = true;
+			}
+			
+			// no device selected, selecting last device
+			if( (dev == (device_num - 1)) && 
+				(dev_selected == false) ) {
+					platform = platform_list[platf];
+					device = device_list[dev];
+					cout << "<----- SELECTED" << endl;
+					cout << "Device requested id:" << query_device_id << " selected id:" << dev << endl;
+					dev_selected = true;
+				}
 
             delete[] attr_data;
             cout << endl;

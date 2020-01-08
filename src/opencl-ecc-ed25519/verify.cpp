@@ -14,7 +14,6 @@
 
 #include "cl_common.h"
 
-#define USE_CLOCK_GETTIME
 #include "perftime.h"
 
 static int consttime_equal(const unsigned char *x, const unsigned char *y) {

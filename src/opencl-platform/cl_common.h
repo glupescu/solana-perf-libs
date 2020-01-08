@@ -27,6 +27,8 @@ extern bool g_verbose;
    #include <CL/cl.h>
 #endif
 
+extern cl_uint query_device_id;
+
 // runs at the start of any OpenCL entry point crypto function
 bool cl_check_init(cl_uint sel_device_type);
 bool cl_check_init(void);
